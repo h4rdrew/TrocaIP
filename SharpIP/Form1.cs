@@ -18,7 +18,7 @@ namespace SharpIP
             InitializeComponent();
 
             var ipcfg = new Ipconfig();
-
+            //teste
             lbIpLocalAtual.Text = ipcfg.GetLocalIPAddress();
         }
     }
