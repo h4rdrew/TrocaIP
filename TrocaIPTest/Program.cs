@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Text.RegularExpressions;
 
 namespace TrocaIPTest
 {
@@ -19,8 +22,6 @@ namespace TrocaIPTest
             //ipcfg.setIP(ip_address, subnet_mask);
 
             Console.WriteLine("Deseja manter as configurações?");
-
-
         }
     }
 }
