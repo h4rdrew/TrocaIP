@@ -60,11 +60,12 @@ namespace SharpIP.Lib
             }
         }
 
-        public List<string> NetworkIdentifier()
+        public List<string> NetworkName()
         {
             NetworkInterface[] networkInfo = NetworkInterface.GetAllNetworkInterfaces();
 
             List<string> currentNetName = new List<string>();
+            //List<string> currentAdapter = new List<string>();
 
             for (int i = 0; i < networkInfo.Length; i++)
             {
@@ -73,9 +74,28 @@ namespace SharpIP.Lib
                 if (nStatus == "Up" && networkInfo[i].Name != "Loopback Pseudo-Interface 1")
                 {
                     currentNetName.Add(networkInfo[i].Name.ToString());
+                    currentNetName.Add(networkInfo[i].Description.ToString());
                 }
             }
             return currentNetName;
+        }
+
+        public List<string> NetworkAdapaterName()
+        {
+            NetworkInterface[] networkInfo = NetworkInterface.GetAllNetworkInterfaces();
+
+            List<string> currentAdapter = new List<string>();
+
+            for (int i = 0; i < networkInfo.Length; i++)
+            {
+                string nStatus = networkInfo[i].OperationalStatus.ToString();
+
+                if (nStatus == "Up" && networkInfo[i].Name != "Loopback Pseudo-Interface 1")
+                {
+                    currentAdapter.Add(networkInfo[i].Description.ToString());
+                }
+            }
+            return currentAdapter;
         }
 
         public List<string> GetLocalIPAddress()
@@ -101,7 +121,10 @@ namespace SharpIP.Lib
             }
             return ListIP;
         }
-
+        /// <summary>
+        /// Localiza a Máscara de Subrede a partir do endereço de IP
+        /// </summary>
+        /// <param name="address">Endereço do IP</param>
         public IPAddress GetSubnetMask(IPAddress address)
         {
             foreach (NetworkInterface adapter in NetworkInterface.GetAllNetworkInterfaces())
@@ -120,6 +143,10 @@ namespace SharpIP.Lib
             throw new ArgumentException(string.Format("Can't find subnetmask for IP address '{0}'", address));
         }
 
+        /// <summary>
+        /// Localiza o Gatway a patir do nome da Rede (network)
+        /// </summary>
+        /// <param name="network">Nome da Rede(network)</param>
         public string GetGateway(string network)
         {
             NetworkInterface[] networkInfo = NetworkInterface.GetAllNetworkInterfaces();
@@ -144,6 +171,72 @@ namespace SharpIP.Lib
                 }
             }
             return test;
+        }
+
+        /// <summary>
+        /// Set's a new IP Address and it's Submask of the local machine
+        /// </summary>
+        /// <param name="ipAddress">The IP Address</param>
+        /// <param name="subnetMask">The Submask IP Address</param>
+        /// <param name="gateway">The gateway.</param>
+        /// <remarks>Requires a reference to the System.Management namespace</remarks>
+        public void SetIPTest(string ipAddress, string subnetMask, string gateway, string networkAdapter)
+        {
+            using (var networkConfigMng = new ManagementClass("Win32_NetworkAdapterConfiguration"))
+            {
+                using (var networkConfigs = networkConfigMng.GetInstances())
+                {
+                    foreach (var managementObject in networkConfigs.Cast<ManagementObject>().Where(managementObject => (bool)managementObject["IPEnabled"]))
+                    {
+                        //var cfg = Win32_NetworkAdapterConfiguration.Build(managementObject);
+                        var cfg = WMIHelper.Build<Win32_NetworkAdapterConfiguration>(managementObject);
+
+                        if (cfg.Description != networkAdapter) continue;
+
+                        //string fkingDesc = (string)managementObject["Description"];
+                        //string fkingCaption = (string)managementObject["Caption"];
+                        using (var newIP = managementObject.GetMethodParameters("EnableStatic"))
+                        {
+                            // Set new IP address and subnet if needed
+                            if ((!String.IsNullOrEmpty(ipAddress)) || (!String.IsNullOrEmpty(subnetMask)))
+                            {
+                                if (!String.IsNullOrEmpty(ipAddress))
+                                {
+                                    newIP["IPAddress"] = new[] { ipAddress };
+                                }
+
+                                if (!String.IsNullOrEmpty(subnetMask))
+                                {
+                                    newIP["SubnetMask"] = new[] { subnetMask };
+                                }
+
+                                managementObject.InvokeMethod("EnableStatic", newIP, null);
+                            }
+
+                            // Set mew gateway if needed
+                            //if (!String.IsNullOrEmpty(gateway))
+                            //{
+                            //    using (var newGateway = managementObject.GetMethodParameters("SetGateways"))
+                            //    {
+                            //        newGateway["DefaultIPGateway"] = new[] { gateway };
+                            //        newGateway["GatewayCostMetric"] = new[] { 1 };
+                            //        managementObject.InvokeMethod("SetGateways", newGateway, null);
+                            //    }
+                            //}
+
+                            if(gateway == "") gateway = "0.0.0.0";
+
+                            using (var newGateway = managementObject.GetMethodParameters("SetGateways"))
+                            {
+                                newGateway["DefaultIPGateway"] = new[] { gateway };
+                                newGateway["GatewayCostMetric"] = new[] { 1 };
+                                managementObject.InvokeMethod("SetGateways", newGateway, null);
+                            }
+                        }
+
+                    }
+                }
+            }
         }
     }
 }

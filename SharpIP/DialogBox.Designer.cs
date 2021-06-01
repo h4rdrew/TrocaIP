@@ -39,24 +39,23 @@ namespace SharpIP
             // 
             // btnYes
             // 
+            this.btnYes.DialogResult = System.Windows.Forms.DialogResult.Yes;
             this.btnYes.Location = new System.Drawing.Point(15, 52);
             this.btnYes.Name = "btnYes";
             this.btnYes.Size = new System.Drawing.Size(75, 23);
             this.btnYes.TabIndex = 0;
             this.btnYes.Text = "Sim";
             this.btnYes.UseVisualStyleBackColor = true;
-            this.btnYes.Click += new System.EventHandler(this.btnYes_Click);
             // 
             // btnNo
             // 
-            this.btnNo.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnNo.DialogResult = System.Windows.Forms.DialogResult.No;
             this.btnNo.Location = new System.Drawing.Point(193, 51);
             this.btnNo.Name = "btnNo";
             this.btnNo.Size = new System.Drawing.Size(75, 23);
             this.btnNo.TabIndex = 1;
             this.btnNo.Text = "Não";
             this.btnNo.UseVisualStyleBackColor = true;
-            this.btnNo.Click += new System.EventHandler(this.btnNo_Click);
             // 
             // timer1
             // 
@@ -91,7 +90,7 @@ namespace SharpIP
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnNo);
             this.Controls.Add(this.btnYes);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DialogBox";
@@ -99,6 +98,7 @@ namespace SharpIP
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "form";
+            this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();
 
