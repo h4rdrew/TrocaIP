@@ -77,9 +77,11 @@ namespace SharpIP
             return aux;
         }
 
-        private void cbx_Networks_SelectedIndexChanged(object sender, EventArgs e)
+        public void cbx_Networks_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selectedItem = Convert.ToString(cbx_Networks.SelectedItem);
+
+            
             // Checa o nome do Rede selecionado na ComboBox e retorna o IP como resultado na Label
             lbIpLocalAtual.Text = PegaIPapartirDoNomeDaRede(selectedItem);
 
@@ -90,7 +92,7 @@ namespace SharpIP
             getDefaultConfig();
         }
 
-        public void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
 
             // Pegando os valores
@@ -99,45 +101,46 @@ namespace SharpIP
             string gatway = txtBox_Gatway.Text;
             string networkAdapter = PegaNomeDoAdaptadorDaRede(cbx_Networks.SelectedItem.ToString());
 
-            //string ipv4 = lbIpLocalAtual.Text;
-            //string subnetMask = (ipcfg.GetSubnetMask(IPAddress.Parse(ipv4))).ToString();
-            //string gatway = ipcfg.GetGateway(Convert.ToString(cbx_Networks.SelectedItem));
-            //string networkAdapter = PegaNomeDoAdaptadorDaRede(cbx_Networks.SelectedItem.ToString());
-
             // Aplicando as configurações
-            ipcfg.SetIPTest(ipv4, subnetMask, gatway, networkAdapter);
-            //ipcfg.setIP(txtBox_IP.Text, txtBox_SubNetMask.Text);
-            //ipcfg.setGateway(txtBox_Gatway.Text);
+            ipcfg.SetIPTest(ipv4, subnetMask, gatway, networkAdapter, "EnableStatic");
 
             var result = DialogBox.Dialog();
 
             if (result == DialogResult.Yes)
             {
-                MessageBox.Show("As configurações foram mantidas.");
                 cbx_Networks_SelectedIndexChanged(sender, e);
+                MessageBox.Show("As configurações foram mantidas.");
                 return;
             }
 
             if (result == DialogResult.Cancel)
             {
+                ipcfg.SetIpDHCP(networkAdapter);
+
+                await PausaComTaskDelay();
+                cbx_Networks_SelectedIndexChanged(sender, e);
+
                 MessageBox.Show("As configurações serão revertidas pois tempo de espera expirou.");
 
-                //ipcfg.setIP(ipv4, subnetMask);
-                //ipcfg.setGateway(gatway);
-
-                cbx_Networks_SelectedIndexChanged(sender, e);
+                return;
             }
 
             if (result == DialogResult.No)
             {
+                ipcfg.SetIpDHCP(networkAdapter);
+
+                await PausaComTaskDelay();
+                cbx_Networks_SelectedIndexChanged(sender, e);
+
                 MessageBox.Show("As configurações serão revertidas.");
 
-                //ipcfg.setIP(ipv4, subnetMask);
-                ipcfg.setGateway(gatway);
-
-                cbx_Networks_SelectedIndexChanged(sender, e);
+                return;
             }
 
+        }
+        async Task PausaComTaskDelay()
+        {
+            await Task.Delay(1000);
         }
     }
 }

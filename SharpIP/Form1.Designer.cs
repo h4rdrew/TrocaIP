@@ -104,6 +104,7 @@ namespace SharpIP
             // 
             this.txtBox_SubNetMask.Location = new System.Drawing.Point(226, 33);
             this.txtBox_SubNetMask.Name = "txtBox_SubNetMask";
+            this.txtBox_SubNetMask.ReadOnly = true;
             this.txtBox_SubNetMask.Size = new System.Drawing.Size(95, 20);
             this.txtBox_SubNetMask.TabIndex = 5;
             // 
@@ -119,7 +120,6 @@ namespace SharpIP
             // 
             // groupBox_SetIP
             // 
-            this.groupBox_SetIP.Controls.Add(this.label4);
             this.groupBox_SetIP.Controls.Add(this.label3);
             this.groupBox_SetIP.Controls.Add(this.txtBox_Gatway);
             this.groupBox_SetIP.Controls.Add(this.label1);
@@ -138,7 +138,7 @@ namespace SharpIP
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 92);
+            this.label4.Location = new System.Drawing.Point(9, 193);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(248, 13);
             this.label4.TabIndex = 10;
@@ -157,6 +157,7 @@ namespace SharpIP
             // 
             this.txtBox_Gatway.Location = new System.Drawing.Point(226, 59);
             this.txtBox_Gatway.Name = "txtBox_Gatway";
+            this.txtBox_Gatway.ReadOnly = true;
             this.txtBox_Gatway.Size = new System.Drawing.Size(95, 20);
             this.txtBox_Gatway.TabIndex = 8;
             // 
@@ -186,7 +187,8 @@ namespace SharpIP
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(442, 196);
+            this.ClientSize = new System.Drawing.Size(442, 208);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.groupBox_SearchIP);
             this.Controls.Add(this.groupBox_SetIP);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -202,6 +204,7 @@ namespace SharpIP
             this.groupBox_SearchIP.ResumeLayout(false);
             this.groupBox_SearchIP.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

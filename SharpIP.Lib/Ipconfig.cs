@@ -11,61 +11,14 @@ namespace SharpIP.Lib
 {
     public class Ipconfig
     {
-        public void setIP(string ip_address, string subnet_mask)
-        {
-            ManagementClass objMC = new ManagementClass("Win32_NetworkAdapterConfiguration");
-            ManagementObjectCollection objMOC = objMC.GetInstances();
-
-            foreach (ManagementObject objMO in objMOC)
-            {
-                if ((bool)objMO["IPEnabled"])
-                {
-                    try
-                    {
-                        ManagementBaseObject setIP;
-                        ManagementBaseObject newIP =
-                            objMO.GetMethodParameters("EnableStatic");
-
-                        newIP["IPAddress"] = new string[] { ip_address };
-                        newIP["SubnetMask"] = new string[] { subnet_mask };
-
-                        setIP = objMO.InvokeMethod("EnableStatic", newIP, null);
-                    }
-                    catch (Exception)
-                    {
-                        throw;
-                    }
-                }
-            }
-        }
-
-        public void setGateway(string gateway)
-        {
-            ManagementClass objMC = new ManagementClass("Win32_NetworkAdapterConfiguration");
-            ManagementObjectCollection objMOC = objMC.GetInstances();
-
-            foreach (ManagementObject objMO in objMOC)
-            {
-                if ((bool)objMO["IPEnabled"])
-                {
-                    ManagementBaseObject setGateway;
-                    ManagementBaseObject newGateway =
-                      objMO.GetMethodParameters("SetGateways");
-
-                    newGateway["DefaultIPGateway"] = new string[] { gateway };
-                    newGateway["GatewayCostMetric"] = new int[] { 1 };
-
-                    setGateway = objMO.InvokeMethod("SetGateways", newGateway, null);
-                }
-            }
-        }
-
+        /// <summary>
+        /// Pega o nome das Redes e Adaptadores respectivos e retorna em uma lista.
+        /// </summary>
         public List<string> NetworkName()
         {
             NetworkInterface[] networkInfo = NetworkInterface.GetAllNetworkInterfaces();
 
             List<string> currentNetName = new List<string>();
-            //List<string> currentAdapter = new List<string>();
 
             for (int i = 0; i < networkInfo.Length; i++)
             {
@@ -80,24 +33,9 @@ namespace SharpIP.Lib
             return currentNetName;
         }
 
-        public List<string> NetworkAdapaterName()
-        {
-            NetworkInterface[] networkInfo = NetworkInterface.GetAllNetworkInterfaces();
-
-            List<string> currentAdapter = new List<string>();
-
-            for (int i = 0; i < networkInfo.Length; i++)
-            {
-                string nStatus = networkInfo[i].OperationalStatus.ToString();
-
-                if (nStatus == "Up" && networkInfo[i].Name != "Loopback Pseudo-Interface 1")
-                {
-                    currentAdapter.Add(networkInfo[i].Description.ToString());
-                }
-            }
-            return currentAdapter;
-        }
-
+        /// <summary>
+        /// Pega os IP(s) local e retorna em uma Lista.
+        /// </summary>
         public List<string> GetLocalIPAddress()
         {
 
@@ -121,6 +59,7 @@ namespace SharpIP.Lib
             }
             return ListIP;
         }
+
         /// <summary>
         /// Localiza a Máscara de Subrede a partir do endereço de IP
         /// </summary>
@@ -150,27 +89,48 @@ namespace SharpIP.Lib
         public string GetGateway(string network)
         {
             NetworkInterface[] networkInfo = NetworkInterface.GetAllNetworkInterfaces();
-            string test = "";
+            string gatewayAdress = "";
 
             foreach (var item in networkInfo)
             {
                 if (item.Name == network)
                 {
-                    var hein = item.GetIPProperties();
+                    var itensDeGateway = item.GetIPProperties();
 
-                    foreach (var oxe in hein.GatewayAddresses)
+                    foreach (var adress in itensDeGateway.GatewayAddresses)
                     {
 
-                        test = oxe.Address.ToString();
+                        gatewayAdress = adress.Address.ToString();
 
-                        if (test.Length < 15)
+                        if (gatewayAdress.Length < 15)
                         {
-                            return test;
+                            return gatewayAdress;
                         }
                     }
                 }
             }
-            return test;
+            return gatewayAdress;
+        }
+
+        public void SetIpDHCP(string networkAdapter)
+        {
+            using (var networkConfigMng = new ManagementClass("Win32_NetworkAdapterConfiguration"))
+            {
+                using (var networkConfigs = networkConfigMng.GetInstances())
+                {
+                    foreach (var managementObject in networkConfigs.Cast<ManagementObject>().Where(managementObject => (bool)managementObject["IPEnabled"]))
+                    {
+                        var cfg = WMIHelper.Build<Win32_NetworkAdapterConfiguration>(managementObject);
+
+                        if (cfg.Description != networkAdapter) continue;
+
+                        using (var newIP = managementObject.GetMethodParameters("EnableDHCP"))
+                        {
+                            managementObject.InvokeMethod("EnableDHCP", newIP, null);
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -179,8 +139,9 @@ namespace SharpIP.Lib
         /// <param name="ipAddress">The IP Address</param>
         /// <param name="subnetMask">The Submask IP Address</param>
         /// <param name="gateway">The gateway.</param>
+        /// <param name="IPstatus">EnableDHCP or EnableStatic.</param>
         /// <remarks>Requires a reference to the System.Management namespace</remarks>
-        public void SetIPTest(string ipAddress, string subnetMask, string gateway, string networkAdapter)
+        public void SetIPTest(string ipAddress, string subnetMask, string gateway, string networkAdapter, string IPstatus)
         {
             using (var networkConfigMng = new ManagementClass("Win32_NetworkAdapterConfiguration"))
             {
@@ -188,52 +149,51 @@ namespace SharpIP.Lib
                 {
                     foreach (var managementObject in networkConfigs.Cast<ManagementObject>().Where(managementObject => (bool)managementObject["IPEnabled"]))
                     {
-                        //var cfg = Win32_NetworkAdapterConfiguration.Build(managementObject);
                         var cfg = WMIHelper.Build<Win32_NetworkAdapterConfiguration>(managementObject);
 
                         if (cfg.Description != networkAdapter) continue;
 
-                        //string fkingDesc = (string)managementObject["Description"];
-                        //string fkingCaption = (string)managementObject["Caption"];
-                        using (var newIP = managementObject.GetMethodParameters("EnableStatic"))
+                        //if (IPstatus == "EnableDHCP")
+                        //{
+
+                        //    using (var newIP = managementObject.GetMethodParameters($"{IPstatus}"))
+                        //    {
+                        //        managementObject.InvokeMethod($"{IPstatus}", newIP, null);
+                        //    }
+
+                        //}
+                        if (IPstatus == "EnableStatic")
                         {
-                            // Set new IP address and subnet if needed
-                            if ((!String.IsNullOrEmpty(ipAddress)) || (!String.IsNullOrEmpty(subnetMask)))
+                            using (var newIP = managementObject.GetMethodParameters($"{IPstatus}"))
                             {
-                                if (!String.IsNullOrEmpty(ipAddress))
+                                // Set new IP address and subnet if needed
+                                if ((!String.IsNullOrEmpty(ipAddress)) || (!String.IsNullOrEmpty(subnetMask)))
                                 {
-                                    newIP["IPAddress"] = new[] { ipAddress };
+                                    if (!String.IsNullOrEmpty(ipAddress))
+                                    {
+                                        newIP["IPAddress"] = new[] { ipAddress };
+                                    }
+
+                                    if (!String.IsNullOrEmpty(subnetMask))
+                                    {
+                                        newIP["SubnetMask"] = new[] { subnetMask };
+                                    }
+
+                                    managementObject.InvokeMethod($"{IPstatus}", newIP, null);
                                 }
 
-                                if (!String.IsNullOrEmpty(subnetMask))
+                                // Set mew gateway if needed
+                                if (!String.IsNullOrEmpty(gateway))
                                 {
-                                    newIP["SubnetMask"] = new[] { subnetMask };
+                                    using (var newGateway = managementObject.GetMethodParameters("SetGateways"))
+                                    {
+                                        newGateway["DefaultIPGateway"] = new[] { gateway };
+                                        newGateway["GatewayCostMetric"] = new[] { 1 };
+                                        managementObject.InvokeMethod("SetGateways", newGateway, null);
+                                    }
                                 }
-
-                                managementObject.InvokeMethod("EnableStatic", newIP, null);
-                            }
-
-                            // Set mew gateway if needed
-                            //if (!String.IsNullOrEmpty(gateway))
-                            //{
-                            //    using (var newGateway = managementObject.GetMethodParameters("SetGateways"))
-                            //    {
-                            //        newGateway["DefaultIPGateway"] = new[] { gateway };
-                            //        newGateway["GatewayCostMetric"] = new[] { 1 };
-                            //        managementObject.InvokeMethod("SetGateways", newGateway, null);
-                            //    }
-                            //}
-
-                            if(gateway == "") gateway = "0.0.0.0";
-
-                            using (var newGateway = managementObject.GetMethodParameters("SetGateways"))
-                            {
-                                newGateway["DefaultIPGateway"] = new[] { gateway };
-                                newGateway["GatewayCostMetric"] = new[] { 1 };
-                                managementObject.InvokeMethod("SetGateways", newGateway, null);
                             }
                         }
-
                     }
                 }
             }
