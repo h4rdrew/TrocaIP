@@ -64,6 +64,12 @@ namespace SharpIP
             txtBox_IP.Text = PegaIPapartirDoNomeDaRede(selectedNetwork); // Get IP
             txtBox_SubNetMask.Text = ipcfg.GetSubnetMask(IPAddress.Parse(txtBox_IP.Text)).ToString(); // Get SubNetMask
             txtBox_Gatway.Text = ipcfg.GetGateway(selectedNetwork); // Get Gatway
+
+            string[] test = PegaIPapartirDoNomeDaRede(selectedNetwork).Split('.');
+            txtBox_1.Text = test[0];
+            txtBox_2.Text = test[1];
+            txtBox_3.Text = test[2];
+            txtBox_4.Text = test[3];
         }
 
         private string PegaIPapartirDoNomeDaRede(string selectedItem)
@@ -81,7 +87,7 @@ namespace SharpIP
         {
             string selectedItem = Convert.ToString(cbx_Networks.SelectedItem);
 
-            
+
             // Checa o nome do Rede selecionado na ComboBox e retorna o IP como resultado na Label
             lbIpLocalAtual.Text = PegaIPapartirDoNomeDaRede(selectedItem);
 

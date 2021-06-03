@@ -38,11 +38,15 @@ namespace SharpIP
             this.txtBox_SubNetMask = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox_SetIP = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.txtBox_1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtBox_Gatway = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox_SearchIP = new System.Windows.Forms.GroupBox();
             this.lb_netAdapterName = new System.Windows.Forms.Label();
+            this.txtBox_2 = new System.Windows.Forms.TextBox();
+            this.txtBox_3 = new System.Windows.Forms.TextBox();
+            this.txtBox_4 = new System.Windows.Forms.TextBox();
             this.groupBox_SetIP.SuspendLayout();
             this.groupBox_SearchIP.SuspendLayout();
             this.SuspendLayout();
@@ -120,6 +124,10 @@ namespace SharpIP
             // 
             // groupBox_SetIP
             // 
+            this.groupBox_SetIP.Controls.Add(this.txtBox_4);
+            this.groupBox_SetIP.Controls.Add(this.txtBox_3);
+            this.groupBox_SetIP.Controls.Add(this.txtBox_2);
+            this.groupBox_SetIP.Controls.Add(this.txtBox_1);
             this.groupBox_SetIP.Controls.Add(this.label3);
             this.groupBox_SetIP.Controls.Add(this.txtBox_Gatway);
             this.groupBox_SetIP.Controls.Add(this.label1);
@@ -134,15 +142,14 @@ namespace SharpIP
             this.groupBox_SetIP.TabStop = false;
             this.groupBox_SetIP.Text = "Set IP";
             // 
-            // label4
+            // txtBox_1
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(9, 193);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(248, 13);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "Em caso de falha será revertido para IP automático";
+            this.txtBox_1.Location = new System.Drawing.Point(26, 62);
+            this.txtBox_1.Name = "txtBox_1";
+            this.txtBox_1.ReadOnly = true;
+            this.txtBox_1.Size = new System.Drawing.Size(26, 20);
+            this.txtBox_1.TabIndex = 10;
+            this.txtBox_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label3
             // 
@@ -160,6 +167,16 @@ namespace SharpIP
             this.txtBox_Gatway.ReadOnly = true;
             this.txtBox_Gatway.Size = new System.Drawing.Size(95, 20);
             this.txtBox_Gatway.TabIndex = 8;
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(9, 193);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(248, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Em caso de falha será revertido para IP automático";
             // 
             // groupBox_SearchIP
             // 
@@ -182,6 +199,33 @@ namespace SharpIP
             this.lb_netAdapterName.Size = new System.Drawing.Size(118, 13);
             this.lb_netAdapterName.TabIndex = 5;
             this.lb_netAdapterName.Text = "Network Adapter Name";
+            // 
+            // txtBox_2
+            // 
+            this.txtBox_2.Location = new System.Drawing.Point(58, 62);
+            this.txtBox_2.Name = "txtBox_2";
+            this.txtBox_2.ReadOnly = true;
+            this.txtBox_2.Size = new System.Drawing.Size(26, 20);
+            this.txtBox_2.TabIndex = 11;
+            this.txtBox_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // txtBox_3
+            // 
+            this.txtBox_3.Location = new System.Drawing.Point(90, 62);
+            this.txtBox_3.Name = "txtBox_3";
+            this.txtBox_3.ReadOnly = true;
+            this.txtBox_3.Size = new System.Drawing.Size(26, 20);
+            this.txtBox_3.TabIndex = 12;
+            this.txtBox_3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // txtBox_4
+            // 
+            this.txtBox_4.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.txtBox_4.Location = new System.Drawing.Point(122, 62);
+            this.txtBox_4.Name = "txtBox_4";
+            this.txtBox_4.Size = new System.Drawing.Size(26, 20);
+            this.txtBox_4.TabIndex = 13;
+            this.txtBox_4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // Form1
             // 
@@ -224,6 +268,10 @@ namespace SharpIP
         private System.Windows.Forms.TextBox txtBox_Gatway;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lb_netAdapterName;
+        private System.Windows.Forms.TextBox txtBox_1;
+        private System.Windows.Forms.TextBox txtBox_4;
+        private System.Windows.Forms.TextBox txtBox_3;
+        private System.Windows.Forms.TextBox txtBox_2;
     }
 }
 
