@@ -66,10 +66,10 @@ namespace SharpIP
             txtBox_Gatway.Text = ipcfg.GetGateway(selectedNetwork); // Get Gatway
 
             string[] test = PegaIPapartirDoNomeDaRede(selectedNetwork).Split('.');
-            txtBox_1.Text = test[0];
+            txtBox_1.Text = "asa" + test[0];
             txtBox_2.Text = test[1];
             txtBox_3.Text = test[2];
-            txtBox_4.Text = test[3];
+            txtBox_4.Text = "254";
         }
 
         private string PegaIPapartirDoNomeDaRede(string selectedItem)
