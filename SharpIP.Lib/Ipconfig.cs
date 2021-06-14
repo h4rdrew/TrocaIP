@@ -5,7 +5,6 @@ using System.Management;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Text;
 
 namespace SharpIP.Lib
 {
@@ -131,6 +130,36 @@ namespace SharpIP.Lib
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Pinga o IP e verifica a resposta, True = Conseguiu pingar.
+        /// </summary>
+        /// <param nameOrAddress="ip">IP com os pontos</param>
+        public static bool PingHost(string nameOrAddress)
+        {
+            bool pingable = false;
+            Ping pinger = null;
+
+            try
+            {
+                pinger = new Ping();
+                PingReply reply = pinger.Send(nameOrAddress);
+                pingable = reply.Status == IPStatus.Success;
+            }
+            catch (PingException)
+            {
+                // Discard PingExceptions and return false;
+            }
+            finally
+            {
+                if (pinger != null)
+                {
+                    pinger.Dispose();
+                }
+            }
+
+            return pingable;
         }
 
         /// <summary>
