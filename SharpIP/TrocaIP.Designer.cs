@@ -36,6 +36,8 @@ namespace SharpIP
             this.txtSubNetMask = new System.Windows.Forms.TextBox();
             this.btnSetIP = new System.Windows.Forms.Button();
             this.gbxSetIP = new System.Windows.Forms.GroupBox();
+            this.lblSharpSistemas = new System.Windows.Forms.Label();
+            this.picLogo = new System.Windows.Forms.PictureBox();
             this.lblIP = new System.Windows.Forms.Label();
             this.txtIP4 = new System.Windows.Forms.TextBox();
             this.txtIP3 = new System.Windows.Forms.TextBox();
@@ -46,11 +48,10 @@ namespace SharpIP
             this.lblObservacao = new System.Windows.Forms.Label();
             this.gbxSearchIP = new System.Windows.Forms.GroupBox();
             this.lblNetAdapterName = new System.Windows.Forms.Label();
-            this.picLogo = new System.Windows.Forms.PictureBox();
-            this.lblSharpSistemas = new System.Windows.Forms.Label();
+            this.btnDarkMode = new System.Windows.Forms.Button();
             this.gbxSetIP.SuspendLayout();
-            this.gbxSearchIP.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
+            this.gbxSearchIP.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbIpLocalAtual
@@ -134,6 +135,26 @@ namespace SharpIP
             this.gbxSetIP.TabIndex = 8;
             this.gbxSetIP.TabStop = false;
             this.gbxSetIP.Text = "Set IP";
+            // 
+            // lblSharpSistemas
+            // 
+            this.lblSharpSistemas.AutoSize = true;
+            this.lblSharpSistemas.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSharpSistemas.Location = new System.Drawing.Point(12, 127);
+            this.lblSharpSistemas.Name = "lblSharpSistemas";
+            this.lblSharpSistemas.Size = new System.Drawing.Size(105, 13);
+            this.lblSharpSistemas.TabIndex = 16;
+            this.lblSharpSistemas.Text = "SHARP SISTEMAS";
+            // 
+            // picLogo
+            // 
+            this.picLogo.Image = global::SharpIP.Properties.Resources.Logo_V3_512_Branco;
+            this.picLogo.Location = new System.Drawing.Point(6, 61);
+            this.picLogo.Name = "picLogo";
+            this.picLogo.Size = new System.Drawing.Size(116, 64);
+            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picLogo.TabIndex = 15;
+            this.picLogo.TabStop = false;
             // 
             // lblIP
             // 
@@ -235,25 +256,18 @@ namespace SharpIP
             this.lblNetAdapterName.TabIndex = 5;
             this.lblNetAdapterName.Text = "Network Adapter Name";
             // 
-            // picLogo
+            // btnDarkMode
             // 
-            this.picLogo.Image = global::SharpIP.Properties.Resources.Logo_V3_512_Branco;
-            this.picLogo.Location = new System.Drawing.Point(6, 61);
-            this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(116, 64);
-            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picLogo.TabIndex = 15;
-            this.picLogo.TabStop = false;
-            // 
-            // lblSharpSistemas
-            // 
-            this.lblSharpSistemas.AutoSize = true;
-            this.lblSharpSistemas.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSharpSistemas.Location = new System.Drawing.Point(12, 127);
-            this.lblSharpSistemas.Name = "lblSharpSistemas";
-            this.lblSharpSistemas.Size = new System.Drawing.Size(105, 13);
-            this.lblSharpSistemas.TabIndex = 16;
-            this.lblSharpSistemas.Text = "SHARP SISTEMAS";
+            this.btnDarkMode.BackgroundImage = global::SharpIP.Properties.Resources.solw;
+            this.btnDarkMode.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnDarkMode.FlatAppearance.BorderSize = 0;
+            this.btnDarkMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDarkMode.Location = new System.Drawing.Point(353, 223);
+            this.btnDarkMode.Name = "btnDarkMode";
+            this.btnDarkMode.Size = new System.Drawing.Size(22, 18);
+            this.btnDarkMode.TabIndex = 11;
+            this.btnDarkMode.UseVisualStyleBackColor = true;
+            this.btnDarkMode.Click += new System.EventHandler(this.btnDarkMode_Click);
             // 
             // TrocaIP
             // 
@@ -261,6 +275,7 @@ namespace SharpIP
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(13)))), ((int)(((byte)(75)))), ((int)(((byte)(126)))));
             this.ClientSize = new System.Drawing.Size(384, 243);
+            this.Controls.Add(this.btnDarkMode);
             this.Controls.Add(this.lblObservacao);
             this.Controls.Add(this.gbxSearchIP);
             this.Controls.Add(this.gbxSetIP);
@@ -276,9 +291,9 @@ namespace SharpIP
             this.Load += new System.EventHandler(this.Form1_Load);
             this.gbxSetIP.ResumeLayout(false);
             this.gbxSetIP.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
             this.gbxSearchIP.ResumeLayout(false);
             this.gbxSearchIP.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -305,6 +320,7 @@ namespace SharpIP
         private System.Windows.Forms.Label lblIP;
         private System.Windows.Forms.PictureBox picLogo;
         private System.Windows.Forms.Label lblSharpSistemas;
+        private System.Windows.Forms.Button btnDarkMode;
     }
 }
 

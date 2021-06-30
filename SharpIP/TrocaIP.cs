@@ -161,5 +161,14 @@ namespace SharpIP
         {
             await Task.Delay(1000);
         }
+
+        private void btnDarkMode_Click(object sender, EventArgs e)
+        {
+            if (BackColor == System.Drawing.Color.FromArgb(13, 75, 126))
+            {
+                BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
+            }
+            else BackColor = System.Drawing.Color.FromArgb(13, 75, 126);
+        }
     }
 }
